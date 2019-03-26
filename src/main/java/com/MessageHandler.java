@@ -6,7 +6,14 @@ import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 
+import java.util.Random;
+
 public class MessageHandler extends ListenerAdapter {
+
+    private static final String[] EIGHT_BALL_ANSWERS = {"Sem qualquer dúvida.", "Com certeza.", "É decididamente assim.", "Sim - definitivamente.", "Podes contar com isso.", "Na Minha opinião, sim.",
+                                                        "Provavelmente sim.", "Parece-me que sim.", "Sim", "Tudo indica que sim.", "Hmmm... Tenta outra vez.", "Pergunta mais tarde.", "É melhor não dizer.",
+                                                        "Não consigo dizer agora.", "Concentra-te e pergunta de novo...", "Pode ser.", "Não contes com isso.", "A Minha resposta é... NÃO.",
+                                                        "As minhas fontes dizem que não.", "Tenho muitas dúvidas acerca disso.", "As perspectivas não são boas..."};
 
     public MessageHandler() {}
 
@@ -45,8 +52,9 @@ public class MessageHandler extends ListenerAdapter {
                 name = member.getEffectiveName();       //This will either use the Member's nickname if they have one,
             } // otherwise it will default to their username. (User#getName())
 
+            String cmd = msg.toLowerCase();
 
-            if (msg.equals("!mandamentos")) {
+            if (cmd.equals("!mandamentos")) {
                 String mandamentos = "```python\n" +
                         "1. Amar o Oráculo acima de tudo o resto.\n" +
                         "2. Não tomar o Seu Santo nome em vão.\n" +
@@ -61,6 +69,11 @@ public class MessageHandler extends ListenerAdapter {
                         "```";
 
                 textChannel.sendMessage(mandamentos).queue();
+            } else if ((cmd.startsWith("oraculo") || cmd.startsWith("oráculo") || cmd.startsWith("@oraculo") || cmd.startsWith("@oráculo")) && cmd.endsWith("?")) {
+                Random rnd = new Random();
+                int answer = rnd.nextInt(EIGHT_BALL_ANSWERS.length);
+
+                textChannel.sendMessage(EIGHT_BALL_ANSWERS[answer]).queue();
             }
         }
     }
